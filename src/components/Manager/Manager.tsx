@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styles from './Manager.module.scss';
 import Button from 'components/Button';
+import { PermissionsContext} from 'Permissions';
 
 const Manager = () => {
   const [posts, setPosts] = useState([
@@ -10,7 +11,10 @@ const Manager = () => {
     { id: 4, title: 'This is the last one' },
     { id: 5, title: 'I lied' },
   ]);
-
+const pcValue = useContext(PermissionsContext)
+if(pcValue === null){
+  throw new Error('Must be inside of PermissionsProvider')
+}
   const remove = (id: number) => {
     setPosts(posts.filter(post => post.id !== id));
   };
