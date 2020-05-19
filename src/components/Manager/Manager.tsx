@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import styles from './Manager.module.scss';
 import Button from 'components/Button';
-import { PermissionsContext} from 'Permissions';
-
+// import { PermissionsContext} from 'Permissions';
+import {usePermissions} from 'Permissions';
 const Manager = () => {
   const [posts, setPosts] = useState([
     { id: 1, title: 'This is a post on a service' },
@@ -11,10 +11,13 @@ const Manager = () => {
     { id: 4, title: 'This is the last one' },
     { id: 5, title: 'I lied' },
   ]);
-const pcValue = useContext(PermissionsContext)
-if(pcValue === null){
-  throw new Error('Must be inside of PermissionsProvider')
-}
+// const pcValue = useContext(PermissionsContext)
+// if(pcValue === null){
+//   throw new Error('Must be inside of PermissionsProvider')
+// }
+// //can't destructure null value so check if null and throw error otherwise can't be null so can destructure
+// const {permissions} = pcValue
+const {permissions} = usePermissions()
   const remove = (id: number) => {
     setPosts(posts.filter(post => post.id !== id));
   };
