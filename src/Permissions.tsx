@@ -22,3 +22,28 @@ export const PermissionsProvider: React.FC = ({children}) => {
         </PermissionsContext.Provider>
     )
 }
+//using router instead of traditional pattern of ternaries or && for conditional rendering
+interface CanProps {
+    //can also be undefined as noted by the ?, or string or array of strings
+    permissions?: Permission | Permission[],
+}
+//FC react functional component <> === generic type
+//default value to handle undefined case
+export const Can: React.FC<CanProps> = ({children, permissions =[]})=> {
+    const {permissions: userPermissions} = usePermissions()
+    let match = false;
+    const permissionsArr = Array.isArray(permissions)? permissions : [permissions];
+    if(permissionsArr.length === 0){
+        match = true;
+    }else {
+        //'some' is like 'find' but returns true or false
+        match = permissionsArr.some(p => userPermissions.includes(p))
+
+    }
+    if(match){
+        return <>{children}</>;
+    }else {
+        return null;
+    }
+    
+}
