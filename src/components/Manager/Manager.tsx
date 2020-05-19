@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styles from './Manager.module.scss';
 import Button from 'components/Button';
 // import { PermissionsContext} from 'Permissions';
-import {usePermissions, Can} from 'Permissions';
+import {usePermissions, Can, Switch as PermissionsSwitch} from 'Permissions';
 const Manager = () => {
   const [posts, setPosts] = useState([
     { id: 1, title: 'This is a post on a service' },
@@ -33,14 +33,19 @@ const {permissions} = usePermissions()
             </div>
             {/* TODO: Only render this for users that are allowed to delete posts */}
             <div className={styles.post_buttons}>
-              <Can permissions="user:write">
-                <Button palette="danger" onClick={() => remove(post.id)}>
-                 Delete
-                </Button>
-              </Can>
-              <Button palette="danger" onClick={() => remove(post.id)}>
-                Delete
-              </Button>
+              <PermissionsSwitch>
+                <Can permissions="user:write">
+                  <Button palette="danger" onClick={() => remove(post.id)}>
+                  Delete
+                  </Button>
+                </Can>
+                <Can>
+                  <Button>
+                    View
+                  </Button>
+                </Can>
+
+              </PermissionsSwitch>
             </div>
           </li>
         ))}
